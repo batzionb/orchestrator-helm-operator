@@ -189,7 +189,7 @@ data:
         pluginConfig:
           dynamicPlugins:
             frontend:
-              janus-idp.backstage-plugin-orchestrator:
+              red-hat-developer-hub.backstage-plugin-orchestrator:
                 appIcons:
                   - importName: OrchestratorIcon
                     module: OrchestratorPlugin
@@ -202,12 +202,11 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}"
-        integrity: {{ .Values.rhdhPlugins.notifications.integrity }}
+        package: ./dynamic-plugins/dist/backstage-plugin-notifications        
         pluginConfig:
           dynamicPlugins:
             frontend:
-              redhat.plugin-notifications:
+              backstage.plugin-notifications:
                 dynamicRoutes:
                   - importName: NotificationsPage
                     menuItem:
@@ -218,26 +217,22 @@ data:
                       importName: NotificationsSidebarItem
                     path: /notifications
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signals.package }}"
-        integrity: {{ .Values.rhdhPlugins.signals.integrity }}
+        package: ./dynamic-plugins/dist/backstage-plugin-signals        
         pluginConfig:
           dynamicPlugins:
             frontend:
-              redhat.plugin-signals: {}
+              backstage.plugin-signals: {}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsBackend.package }}"
-        integrity: {{ .Values.rhdhPlugins.notificationsBackend.integrity }}
-      - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signalsBackend.package }}"
-        integrity: {{ .Values.rhdhPlugins.signalsBackend.integrity }}
+        package: ./dynamic-plugins/dist/backstage-plugin-notifications-backend-dynamic        
+      - disabled: false   
+        package: ./dynamic-plugins/dist/backstage-plugin-signals-backend-dynamic             
       - disabled: false
         package: ./dynamic-plugins/dist/backstage-plugin-scaffolder-backend-module-github-dynamic
   {{- if and .Values.rhdhPlugins.notificationsEmail.enabled
         ( and (.Values.rhdhOperator.secretRef.notificationsEmail.hostname) (dig "data" .Values.rhdhOperator.secretRef.notificationsEmail.hostname "" $secret ) )
   }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsEmail.package }}"
-        integrity: {{ .Values.rhdhPlugins.notificationsEmail.integrity }}
+        package:  ./dynamic-plugins/dist/backstage-plugin-notifications-backend-module-email-dynamic
         pluginConfig:
           notifications:
             processors:
